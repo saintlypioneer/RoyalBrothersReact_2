@@ -2,17 +2,23 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useDisclosure } from "@chakra-ui/react";
 import CustomDrawer from "./drawer";
+import CityModal from "./cityModal";
 
 function Navbar(props) {
 
     // for sideDrawer
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
+    // for city modal
+    const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
     return (
         <Container>
-            <CustomDrawer isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+            {/* Menu Drawer */}
+            <CustomDrawer isOpen={isDrawerOpen} onOpen={onDrawerOpen} onClose={onDrawerClose} />
+            {/* City Modal */}
+            <CityModal isOpen={isModalOpen} onOpen={onModalOpen} onClose={onModalClose} />
             <Left>
-                <button onClick={onOpen}>
+                <button onClick={onDrawerOpen}>
                     <svg width="20" height="20" viewBox="0 0 20 20">
                         <rect x="0" y="0" width="20" height="2"></rect>
                         <rect x="0" y="7" width="20" height="2"></rect>
@@ -28,7 +34,7 @@ function Navbar(props) {
             <Link to="#"><button>Partner</button></Link>
             </Center>
             <Right>
-                <button id="city">
+                <button onClick={onModalOpen} id="city">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
