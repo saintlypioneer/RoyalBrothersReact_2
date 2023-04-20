@@ -139,6 +139,8 @@ import styled from 'styled-components';
     img{
         width: 90%;
         object-fit: cover;
+        border-radius: 5px;
+        overflow: hidden;
     }
 
     h2{

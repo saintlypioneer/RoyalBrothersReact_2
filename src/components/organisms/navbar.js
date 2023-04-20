@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useDisclosure } from "@chakra-ui/react";
-import CustomDrawer from "./drawer";
-import CityModal from "./cityModal";
+import CustomDrawer from "./landingPage/drawer";
+import CityModal from "./landingPage/cityModal";
 
 function Navbar(props) {
 
@@ -65,6 +65,8 @@ const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: white;
+    z-index: 10;
 
     button{
         height: fit-content;
@@ -136,19 +138,14 @@ const Authenticate = styled.div`
         border: none;
 
         &:first-child:hover{
-            background-color: #666;
-            color: white;
+            background-color: grey;
+            color: black;
         }
 
         &:last-child:hover{
             background-color: #fed250;
         }
     }
-
-    /* button:first-child:hover{
-        background-color: #666;
-        color: white;
-    } */
     
 `;
 
