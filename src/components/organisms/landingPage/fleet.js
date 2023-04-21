@@ -47,7 +47,7 @@ function Fleet(props){
 
 const Container = styled.div`
     width: 100%;
-    margin-top: 10px;
+    margin-top: 20px;
 
     h1{
         font-size: 1.5rem;

@@ -100,7 +100,7 @@ const Div = styled.div`
         font-weight: 600;
         margin-bottom: 10px;
         padding-bottom: 10px;
-        border-bottom: 2px solid gray;
+        border-bottom: 2px solid #fed250;
     }
 
     div{

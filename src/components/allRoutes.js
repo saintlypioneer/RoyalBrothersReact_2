@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./templates/home";
+import Auth from "./templates/auth";
 
 function AllRoutes(){
 
@@ -30,7 +31,7 @@ function AllRoutes(){
         },
         {
             path: "/auth",
-            element: "**auth"
+            element: <Auth />
         },
         {
             path: "/checkout",
