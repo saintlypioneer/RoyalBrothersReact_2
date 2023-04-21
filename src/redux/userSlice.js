@@ -26,6 +26,17 @@ const userSlice = createSlice({
         isLoading: false,
         isError: false
     },
+    reducers: {
+        logout: (state)=>{
+            state.email= "";
+            state.name= "";
+            state.mobile= "";
+            state.credits= 0;
+            state.token= "";
+            state.isLoading= false;
+            state.isError= false;
+        }
+    },
     extraReducers: (builder)=>{
         // SIGNING-IN
         builder.addCase(createUser.pending, (state, action)=>{
@@ -90,5 +101,7 @@ const userSlice = createSlice({
         });
     }
 });
+
+export const {logout} = userSlice.actions;
 
 export default userSlice.reducer;

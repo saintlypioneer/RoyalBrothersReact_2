@@ -1,11 +1,18 @@
 import { useToast } from '@chakra-ui/react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import Login from '../organisms/authPage/login';
 import Signup from '../organisms/authPage/signup';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 function Auth(props){
+
+    // checking if the path is for signup
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const type = searchParams.get("type");
+    const isSignup = (type=="signup")?true:false;
+    console.log(isSignup);
 
     // toast
     const toast = useToast();
@@ -30,14 +37,10 @@ function Auth(props){
             isClosable: true,
             position: "bottom-right"
         });
+        return(
+            <Navigate to="/" />
+        );
     }
-
-    // checking if the path is for signup
-    const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const type = searchParams.get("type");
-    const isSignup = (type=="signup")?true:false;
-    console.log(isSignup);
 
     if (isSignup){
         return(

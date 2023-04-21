@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useDisclosure } from "@chakra-ui/react";
 import CustomDrawer from "./landingPage/drawer";
 import CityModal from "./landingPage/cityModal";
+import Profile from "../molecules/navbarProfile";
+import { useSelector } from "react-redux";
 
 function Navbar(props) {
 
@@ -10,6 +12,8 @@ function Navbar(props) {
     const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
     // for city modal
     const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+
+    const {name} = useSelector(state=>state.user);
 
     return (
         <Container>
@@ -48,8 +52,12 @@ function Navbar(props) {
 
                 </button>
                 <Authenticate>
-                <Link to="/auth"><button>Login</button></Link>
-                <Link to="/auth?type=signup"><button>Sign up</button></Link>
+                    {
+                        name!=""?<Profile />:<>
+                        <Link to="/auth"><button>Login</button></Link>
+                        <Link to="/auth?type=signup"><button>Sign up</button></Link>
+                    </>
+                    }
                 </Authenticate>
             </Right>
         </Container>
