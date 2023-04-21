@@ -3,6 +3,7 @@ import Home from "./templates/home";
 import Auth from "./templates/auth";
 import Search from "./templates/search";
 import Checkout from "./templates/checkout";
+import Payment from "./templates/payment";
 
 function AllRoutes(){
 
@@ -41,7 +42,7 @@ function AllRoutes(){
         },
         {
             path: "/payment",
-            element: "**payment"
+            element: <Payment />
         },
         {
             path: "/myrides",
