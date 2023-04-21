@@ -147,7 +147,7 @@ function Search(props){
                     {
                         vehicles.map((e, idx)=>{
                             return (
-                                <Card name={e.name} image={e.image} pickupDate={data.pickup.date} pickupTime={data.pickup.time} dropoffDate={data.dropoff.date} dropoffTime={data.dropoff.time} rate={e.hourly.monThur.within} />
+                                <Card name={e.name} image={e.image} pickupDate={data.pickup.date} pickupTime={data.pickup.time} dropoffDate={data.dropoff.date} dropoffTime={data.dropoff.time} rate={e.hourly.monThur.within} vehInfo={e} />
                             );
                         })
                     }

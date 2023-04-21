@@ -1,6 +1,9 @@
 import styled from "styled-components";
+import { selectVehicle } from "../../../redux/bookingSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, rate}) {
+function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, rate, vehInfo}) {
 
     const options = { timeZone: "Asia/Kolkata", dateStyle: "long" };
     const formattedPickupDate = new Date(pickupDate).toLocaleDateString("en-IN", options);
@@ -10,6 +13,16 @@ function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, ra
     const hourDifference = Math.abs(date2 - date1) / 36e5;
     console.log(hourDifference);
     const total = (rate*hourDifference).toFixed(2);
+
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    function handleBooking(){
+        dispatch(selectVehicle(vehInfo));
+        console.log(vehInfo);
+        navigate("/checkout");
+    }
 
 
     return (
@@ -29,7 +42,7 @@ function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, ra
             </TimeStamp>
             <Book>
                 <span>₹ {total}</span>
-                <button>Book</button>
+                <button onClick={handleBooking}>Book</button>
             </Book>
         </Container>
     );

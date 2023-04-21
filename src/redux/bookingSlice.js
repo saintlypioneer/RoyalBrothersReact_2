@@ -22,7 +22,10 @@ const bookingSlice = createSlice({
         city: "",
         vehicles: [],
         amount: 0,
-        helmetsCount: 0
+        helmetsCount: 0,
+        booking: {
+            vehicleInfo: {}
+        }
     },
     reducers: {
         setTimeSpan: (state, action)=>{
@@ -33,6 +36,12 @@ const bookingSlice = createSlice({
         },
         setCity: (state, action) =>{
             state.city = action.payload.city;
+        },
+        selectVehicle: (state, action)=>{
+            state.booking.vehicleInfo= {...action.payload};
+        },
+        setAmount: (state, action)=>{
+            state.amount = action.payload;
         }
     },
     extraReducers: (builder)=>{
@@ -43,6 +52,6 @@ const bookingSlice = createSlice({
     }
 });
 
-export const {setTimeSpan, setCity} = bookingSlice.actions;
+export const {setTimeSpan, setCity, selectVehicle, setAmount} = bookingSlice.actions;
 
 export default bookingSlice.reducer;

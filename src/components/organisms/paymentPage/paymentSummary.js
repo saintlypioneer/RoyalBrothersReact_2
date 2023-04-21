@@ -1,14 +1,12 @@
 import styled from "styled-components";
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function PaymentSummary(props) {
 
     const [seconds, setSeconds] = useState(180); // 3 minutes in seconds
     const [percent, setPercent] = useState(100);
-
-    const total = localStorage.getItem('total');
-    // total + 2 * Math.round(total * 0.14
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -22,13 +20,15 @@ function PaymentSummary(props) {
         setPercent(seconds / 180 * 100); // calculate the percentage
     }, [seconds]);
 
+    const {amount} = useSelector(state=>state.booking);
+
     return (
         <Container>
             <Payable>
                 <h3>Payable</h3>
                 <div>
                     <p className="title">Total Payable Amount</p>
-                    <p className="amount">₹ {parseInt(total) + 2 * (parseInt(total) * 0.14)}</p>
+                    <p className="amount">₹ {amount || 0}</p>
                 </div>
             </Payable>
             <Timer>

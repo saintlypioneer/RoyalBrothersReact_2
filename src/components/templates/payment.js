@@ -4,6 +4,7 @@ import PaymentSummary from "../organisms/paymentPage/paymentSummary";
 
 
 function Payment(props){
+
     return(
         <Container>
             <PaymentMethod />

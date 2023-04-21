@@ -8,7 +8,50 @@ import PaymentCardForm from "./paymentCardForm";
 function PaymentMethod(props) {
     const [value, setValue] = useState('1');
     const toast = useToast();
+
+    const [cardDetails, setCardDetails] = useState({
+        number: "",
+        name: "",
+        expiryMonth: "",
+        expiryYear: "",
+        cvv: ""
+    });
+
+    function handleData(e){
+        setCardDetails({
+            ...cardDetails,
+            [e.target.name]: e.target.value
+        });
+    }
+
     const navigate = useNavigate();
+
+    function handlePayment(){
+        if (cardDetails.number.length<12 || cardDetails.name.length<5 || cardDetails.expiryMonth.length<2 || cardDetails.expiryYear<2 || cardDetails.cvv<3){
+            toast({
+                title: 'Please enter valid details',
+                // description: "Do you already have an account?",
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+                position: "bottom-right"
+            });
+        } else {
+            toast({
+                title: 'Payment Successful!',
+                description: "This vehicle has been successfully booked.",
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: "bottom-right"
+            });
+            setTimeout(() => {
+                navigate("/")
+
+            }, 3000); // Redirect after 3 seconds
+        }
+    }
+
     return (
         <Container>
             <h3>Choose Payment Method</h3>
@@ -43,21 +86,9 @@ function PaymentMethod(props) {
                             </Radio>
                         </Stack>
                     </RadioGroup>
-                    <PaymentCardForm />
+                    <PaymentCardForm handleData={handleData} />
                     <Button
-                        onClick={() => {
-                            toast({
-                                title: 'Payment Success!',
-                                description: "This vehicle has been successfully booked.",
-                                status: 'success',
-                                duration: 3000,
-                                isClosable: true,
-                            });
-                            setTimeout(() => {
-                                return navigate("/")
-
-                            }, 3000); // Redirect after 3 seconds
-                        }}
+                        onClick={handlePayment}
                     >Make Payment</Button>
                 </Tab>
             </div>
@@ -132,6 +163,7 @@ const Tab = styled.div`
 
 const Button = styled.div`
     background-color: #fed250;
+    cursor: pointer;
     color: black;
     width: 200px;
     border-radius: 5px;

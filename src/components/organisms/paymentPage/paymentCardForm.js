@@ -1,24 +1,24 @@
 import styled from "styled-components";
 
-function PaymentCardForm(props) {
+function PaymentCardForm({handleData}) {
     return (
         <Container>
             <form>
                 <label for="cardnumber">Card Number</label>
-                <input id="cardnumber" type="text" placeholder="Enter you card details" />
+                <input name="number" onChange={e=>handleData(e)} id="cardnumber" type="text" placeholder="Enter you card details" />
                 <label for="cardname">Name on the card</label>
-                <input id="cardname" type="text" placeholder="Enter name on the card" />
+                <input name="name" onChange={e=>handleData(e)} id="cardname" type="text" placeholder="Enter name on the card" />
                 <Expiry>
                     <div>
                         <label>Expiry</label>
                         <br/>
-                        <input id="month" type="number" placeholder="MM" />&nbsp;&nbsp;
-                        <input id="year" type="number" placeholder="YY" />
+                        <input name="expiryMonth" onChange={e=>handleData(e)} id="month" type="number" placeholder="MM" />&nbsp;&nbsp;
+                        <input name="expiryYear" onChange={e=>handleData(e)} id="year" type="number" placeholder="YY" />
                     </div>
                     <div>
                         <label>CVV</label>
                         <br/>
-                        <input id="cvv" type="number" placeholder="CVV" />
+                        <input name="cvv" onChange={e=>handleData(e)} id="cvv" type="number" placeholder="CVV" />
                     </div>
                 </Expiry>
             </form>

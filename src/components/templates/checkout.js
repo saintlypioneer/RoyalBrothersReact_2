@@ -1,24 +1,49 @@
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setAmount } from "../../redux/bookingSlice";
 
 function Checkout(props){
+
+    const {vehicleInfo} = useSelector(state=>state.booking.booking);
+    const {pickup, dropoff} = useSelector(state=>state.booking);
+
+    const options = { timeZone: "Asia/Kolkata", dateStyle: "long" };
+    const formattedPickupDate = new Date(pickup.date).toLocaleDateString("en-IN", options);
+    const formattedDropoffDate = new Date(dropoff.date).toLocaleDateString("en-IN", options);
+    const date1 = new Date(`${formattedPickupDate} ${pickup.time}`);
+    const date2 = new Date(`${formattedDropoffDate} ${dropoff.time}`);
+    const hourDifference = Math.abs(date2 - date1) / 36e5;
+    const total = (vehicleInfo.hourly.monThur.within*hourDifference).toFixed(2);
+    const amountIncludingGST = (parseFloat(total)+2*parseFloat(total*0.14)).toFixed(2);
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    function handleCheckout(){
+        console.log("Checking out");
+        dispatch(setAmount(amountIncludingGST));
+        navigate("/payment");
+    }
+
     return (
         <Container>
             <Summary>
                 <h1>SUMMARY</h1>
                 <div>
                     <div id="image">
-                        <img src="https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png" alt="" />
+                        <img src={vehicleInfo.image} alt="" />
                     </div>
                     <Details>
                         <TimeStamp>
                             <div>
-                                <span>02:00 pm</span>
-                                <span>21 Apr 2023</span>
+                                <span>{pickup.time}</span>
+                                <span>{formattedPickupDate}</span>
                             </div>
                             <To>to</To>
                             <div>
-                                <span>09:30 am</span>
-                                <span>24 Apr 2023</span>
+                                <span>{dropoff.time}</span>
+                                <span>{formattedDropoffDate}</span>
                             </div>
                         </TimeStamp>
                         <div id="address">
@@ -28,16 +53,16 @@ function Checkout(props){
                         <div id="rates">
                             <p>
                                 <span>Weekday - 9.5 hrs * rupee17.0/hr</span>
-                                <span>₹ 161.5</span>
+                                <span>₹ {vehicleInfo.hourly.monThur.within.toFixed(2)}</span>
                             </p>
                             <p>
                                 <span>Weekday - 9.5 hrs * rupee17.0/hr</span>
-                                <span>₹ 161.5</span>
+                                <span>₹ {vehicleInfo.hourly.friSun.over.toFixed(2)}</span>
                             </p>
                         </div>
                         <div id="total">
                             <span>Total</span>
-                            <span>₹ 1140.32</span>
+                            <span>₹ {total}</span>
                         </div>
                         <div id="helmets">
                             <span>Number of Helmet (?)</span>
@@ -62,15 +87,15 @@ function Checkout(props){
                 <div>
                     <p>
                         <span>Booking Fee</span>
-                        <span>₹ 1147.50</span>
+                        <span>₹ {total}</span>
                     </p>
                     <p>
                         <span>CGST (14%)</span>
-                        <span>₹ 160.65</span>
+                        <span>₹ {(parseFloat(total*0.14)).toFixed(2)}</span>
                     </p>
                     <p>
                         <span>SGST (14%)</span>
-                        <span>₹ 160.65</span>
+                        <span>₹ {(parseFloat(total*0.14)).toFixed(2)}</span>
                     </p>
                     <p>
                         <span>Refundable Deposit</span>
@@ -78,10 +103,10 @@ function Checkout(props){
                     </p>
                     <p>
                         <span>Total Payable Amount</span>
-                        <span>₹ 1468.80</span>
+                        <span>₹ {(parseFloat(total)+2*parseFloat(total*0.14)).toFixed(2)}</span>
                     </p>
                 </div>
-                <button>Make Payment</button>
+                <button onClick={handleCheckout}>Make Payment</button>
             </Total>
         </Container>
     );
@@ -246,6 +271,7 @@ const Total = styled.div`
         padding: 5px 10px;
         border-radius: 4px;
         margin-top: 10px;
+        font-weight: 600;
     }
 
     h1{
