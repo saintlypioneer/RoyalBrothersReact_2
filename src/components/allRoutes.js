@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./templates/home";
 import Auth from "./templates/auth";
 import Search from "./templates/search";
+import Checkout from "./templates/checkout";
 
 function AllRoutes(){
 
@@ -36,7 +37,7 @@ function AllRoutes(){
         },
         {
             path: "/checkout",
-            element: "**checkout"
+            element: <Checkout />
         },
         {
             path: "/payment",

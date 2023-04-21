@@ -25,6 +25,7 @@ function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, to
 }
 
 const Container = styled.div`
+    max-width: 300px;
     box-shadow: rgba(100, 100, 111, 0.08) 0px 7px 29px 0px;
     padding: 10px;
     border-radius: 8px;
