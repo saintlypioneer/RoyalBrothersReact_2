@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 
 // reducers
 import userReducer from "./userSlice";
+import bookingReducer from "./bookingSlice";
 
 const persisteConfig = {
     key: "royay_brother",
@@ -15,6 +16,7 @@ const persisteConfig = {
 export const store = configureStore({
     reducer: {
         user: persistReducer(persisteConfig, userReducer),
+        booking: persistReducer(persisteConfig, bookingReducer),
     },
     middleware: [thunk]
 });

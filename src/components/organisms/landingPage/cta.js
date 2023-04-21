@@ -2,49 +2,134 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { DatePickerInput } from "@mantine/dates";
 import { IconCalendar } from "@tabler/icons-react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { setTimeSpan } from "../../../redux/bookingSlice";
+import { useNavigate } from "react-router-dom";
 
 function CTA() {
-    return (
-        <MainContainer>
-            <Container>
-            <h1>Search your next ride</h1>
-            <form>
-                <DateTime>
-                    <p>Pickup</p>
-                    <div>
-                        <DatePickerInput
-                            minDate={new Date()}
-                            maxDate={dayjs(new Date()).add(1, "month").toDate()}
-                            placeholder="Date"
-                            maw={400}
-                            miw={"45%"}
-                            mx="auto"
-                            icon={<IconCalendar size="1.1rem" stroke={1.5}
-                            />}
-                        />
-                        <input
-                            className="timeSelector"
-                            type={"time"}
-                        />
-                    </div>
-                </DateTime>
-                <DateTime>
-                    <p>Dropoff</p>
-                    <div>
-                        <DatePickerInput
-                            minDate={new Date()}
-                            maxDate={dayjs(new Date()).add(1, "month").toDate()}
-                            placeholder="Date"
-                            maw={400}
-                            miw={"45%"}
-                            mx="auto"
-                            icon={<IconCalendar size="1.1rem" stroke={1.5} />}
-                        />
-                        <input
-                            className="timeSelector"
-                            type={"time"}
-                        />
-                        {/* <TimeInput
+
+  const dispatch = useDispatch();
+  const { pickup, dropoff } = useSelector(state => state.booking);
+
+  const [data, setData] = useState({
+    pickup: {
+      date: pickup.date,
+      time: pickup.time,
+    },
+    dropoff: {
+      date: dropoff.date,
+      time: dropoff.time,
+    }
+  });
+
+  function handleData(val, type){
+    console.log(type);
+    if (type=="pickup_date"){
+      setData({
+        ...data,
+        pickup: {
+          ...data.pickup,
+          date: val
+        }
+      })
+    } else if (type=="pickup_time"){
+      setData({
+        ...data,
+        pickup: {
+          ...data.pickup,
+          time: val
+        }
+      })
+    } else if (type=="dropoff_date"){
+      setData({
+        ...data,
+        dropoff: {
+          ...data.dropoff,
+          date: val
+        }
+      })
+    } else if (type=="dropoff_time"){
+      setData({
+        ...data,
+        dropoff: {
+          ...data.dropoff,
+          time: val
+        }
+      })
+    }
+  }
+
+  const navigate = useNavigate();
+
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    console.log(data);
+    dispatch(setTimeSpan(data));
+
+    // if everything okay
+    // navigate to search page
+    
+      navigate("/search");
+  }
+
+  return (
+    <MainContainer>
+      <Container>
+        <h1>Search your next ride</h1>
+        <form onSubmit={(e) => handleFormSubmit(e)}>
+          <DateTime>
+            <p>Pickup</p>
+            <div>
+              <DatePickerInput
+                minDate={new Date()}
+                maxDate={dayjs(new Date()).add(1, "month").toDate()}
+                placeholder="Date"
+                maw={400}
+                miw={"45%"}
+                mx="auto"
+                icon={<IconCalendar size="1.1rem" stroke={1.5} />}
+                value={new Date(data.pickup.date)}
+                onChange={val => {
+                  console.log(val);
+                  handleData(val, "pickup_date");
+                }}
+              />
+              <input
+                className="timeSelector"
+                type={"time"}
+                value={data.pickup.time}
+                onChange={e => {
+                  handleData(e.target.value, "pickup_time");
+                }}
+              />
+            </div>
+          </DateTime>
+          <DateTime>
+            <p>Dropoff</p>
+            <div>
+              <DatePickerInput
+                minDate={new Date()}
+                maxDate={dayjs(new Date()).add(1, "month").toDate()}
+                placeholder="Date"
+                maw={400}
+                miw={"45%"}
+                mx="auto"
+                icon={<IconCalendar size="1.1rem" stroke={1.5} />}
+                value={new Date(data.dropoff.date)}
+                onChange={val => {
+                  handleData(val, "dropoff_date");
+                }}
+              />
+              <input
+                className="timeSelector"
+                type={"time"}
+                value={data.dropoff.time}
+                onChange={e => {
+                  handleData(e.target.value, "dropoff_time");
+                }}
+              />
+              {/* <TimeInput
                         placeholder="Time"
                         miw={"45%"}
                         maw={400}
@@ -53,15 +138,15 @@ function CTA() {
                         value={dropoffTime}
                         onChange={setDropoffTime}
                      /> */}
-                    </div>
-                </DateTime>
-                <button className="submit" type="submit">
-                    Search
-                </button>
-            </form>
-        </Container>
-        </MainContainer>
-    );
+            </div>
+          </DateTime>
+          <button className="submit" type="submit">
+            Search
+          </button>
+        </form>
+      </Container>
+    </MainContainer>
+  );
 }
 
 const MainContainer = styled.div`

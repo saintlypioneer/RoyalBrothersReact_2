@@ -3,126 +3,64 @@ import dayjs from "dayjs";
 import { DatePickerInput } from "@mantine/dates";
 import { IconCalendar } from "@tabler/icons-react";
 import Card from "../organisms/searchPage/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { setTimeSpan } from "../../redux/bookingSlice";
+import { useState } from "react";
 
 function Search(props){
 
-    const vehicles = [
-        {
-            url: "https://bd.gaadicdn.com/upload/userfiles/images/5e1ec6b4439b3.png",
-            name: "Honda Activa 6G"
+    const dispatch = useDispatch();
+    const { pickup, dropoff, vehicles } = useSelector(state => state.booking);
+
+    const [data, setData] = useState({
+        pickup: {
+        date: pickup.date,
+        time: pickup.time,
         },
-        {
-            url: "https://cdn.autoportal.com/bp-v3/img/models/bd/f/hero-splendor-plus-1464785915.png",
-            name: "Hero Splendor Plus"
-        },
-        {
-            url: "https://eshop.heromotocorp.com/pub/media/catalog/product/h/f/hf-deluxe-techno-blue_2.png",
-            name: "Hero HF Deluxe"
-        },
-        {
-            url: "https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png",
-            name: "Bajaj Pulsar 150"
-        },
-        {
-            url: "https://palacehonda.com/wp-content/uploads/2020/09/dio-bs6-6g.png",
-            name: "Honda Dio"
-        },{
-            url: "https://bd.gaadicdn.com/upload/userfiles/images/5e1ec6b4439b3.png",
-            name: "Honda Activa 6G"
-        },
-        {
-            url: "https://cdn.autoportal.com/bp-v3/img/models/bd/f/hero-splendor-plus-1464785915.png",
-            name: "Hero Splendor Plus"
-        },
-        {
-            url: "https://eshop.heromotocorp.com/pub/media/catalog/product/h/f/hf-deluxe-techno-blue_2.png",
-            name: "Hero HF Deluxe"
-        },
-        {
-            url: "https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png",
-            name: "Bajaj Pulsar 150"
-        },
-        {
-            url: "https://palacehonda.com/wp-content/uploads/2020/09/dio-bs6-6g.png",
-            name: "Honda Dio"
-        },{
-            url: "https://bd.gaadicdn.com/upload/userfiles/images/5e1ec6b4439b3.png",
-            name: "Honda Activa 6G"
-        },
-        {
-            url: "https://cdn.autoportal.com/bp-v3/img/models/bd/f/hero-splendor-plus-1464785915.png",
-            name: "Hero Splendor Plus"
-        },
-        {
-            url: "https://eshop.heromotocorp.com/pub/media/catalog/product/h/f/hf-deluxe-techno-blue_2.png",
-            name: "Hero HF Deluxe"
-        },
-        {
-            url: "https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png",
-            name: "Bajaj Pulsar 150"
-        },
-        {
-            url: "https://palacehonda.com/wp-content/uploads/2020/09/dio-bs6-6g.png",
-            name: "Honda Dio"
-        },{
-            url: "https://bd.gaadicdn.com/upload/userfiles/images/5e1ec6b4439b3.png",
-            name: "Honda Activa 6G"
-        },
-        {
-            url: "https://cdn.autoportal.com/bp-v3/img/models/bd/f/hero-splendor-plus-1464785915.png",
-            name: "Hero Splendor Plus"
-        },
-        {
-            url: "https://eshop.heromotocorp.com/pub/media/catalog/product/h/f/hf-deluxe-techno-blue_2.png",
-            name: "Hero HF Deluxe"
-        },
-        {
-            url: "https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png",
-            name: "Bajaj Pulsar 150"
-        },
-        {
-            url: "https://palacehonda.com/wp-content/uploads/2020/09/dio-bs6-6g.png",
-            name: "Honda Dio"
-        },{
-            url: "https://bd.gaadicdn.com/upload/userfiles/images/5e1ec6b4439b3.png",
-            name: "Honda Activa 6G"
-        },
-        {
-            url: "https://cdn.autoportal.com/bp-v3/img/models/bd/f/hero-splendor-plus-1464785915.png",
-            name: "Hero Splendor Plus"
-        },
-        {
-            url: "https://eshop.heromotocorp.com/pub/media/catalog/product/h/f/hf-deluxe-techno-blue_2.png",
-            name: "Hero HF Deluxe"
-        },
-        {
-            url: "https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png",
-            name: "Bajaj Pulsar 150"
-        },
-        {
-            url: "https://palacehonda.com/wp-content/uploads/2020/09/dio-bs6-6g.png",
-            name: "Honda Dio"
-        },{
-            url: "https://bd.gaadicdn.com/upload/userfiles/images/5e1ec6b4439b3.png",
-            name: "Honda Activa 6G"
-        },
-        {
-            url: "https://cdn.autoportal.com/bp-v3/img/models/bd/f/hero-splendor-plus-1464785915.png",
-            name: "Hero Splendor Plus"
-        },
-        {
-            url: "https://eshop.heromotocorp.com/pub/media/catalog/product/h/f/hf-deluxe-techno-blue_2.png",
-            name: "Hero HF Deluxe"
-        },
-        {
-            url: "https://5.imimg.com/data5/SELLER/Default/2021/6/PF/OX/WB/45461290/bajaj-pulsar-150-1000x1000.png",
-            name: "Bajaj Pulsar 150"
-        },
-        {
-            url: "https://palacehonda.com/wp-content/uploads/2020/09/dio-bs6-6g.png",
-            name: "Honda Dio"
-        },
-    ];
+        dropoff: {
+        date: dropoff.date,
+        time: dropoff.time,
+        }
+    });
+
+    function handleData(val, type){
+        console.log(type);
+        if (type=="pickup_date"){
+        setData({
+            ...data,
+            pickup: {
+            ...data.pickup,
+            date: val
+            }
+        })
+        } else if (type=="pickup_time"){
+        setData({
+            ...data,
+            pickup: {
+            ...data.pickup,
+            time: val
+            }
+        })
+        } else if (type=="dropoff_date"){
+        setData({
+            ...data,
+            dropoff: {
+            ...data.dropoff,
+            date: val
+            }
+        })
+        } else if (type=="dropoff_time"){
+        setData({
+            ...data,
+            dropoff: {
+            ...data.dropoff,
+            time: val
+            }
+        })
+        }
+
+        dispatch(setTimeSpan(data));
+    }
 
     return(
         <Container>
@@ -138,12 +76,20 @@ function Search(props){
                             maw={400}
                             miw={"50%"}
                             mx="auto"
-                            icon={<IconCalendar size="1.1rem" stroke={1.5}
-                            />}
+                            icon={<IconCalendar size="1.1rem" stroke={1.5}/>}
+                            value={new Date(data.pickup.date)}
+                            onChange={val => {
+                                console.log(val);
+                                handleData(val, "pickup_date");
+                            }}
                         />
                         <input
                             className="timeSelector"
                             type={"time"}
+                            value={data.pickup.time}
+                            onChange={e => {
+                              handleData(e.target.value, "pickup_time");
+                            }}
                         />
                     </div>
                 </DateTime>
@@ -157,12 +103,20 @@ function Search(props){
                             maw={400}
                             miw={"50%"}
                             mx="auto"
-                            icon={<IconCalendar size="1.1rem" stroke={1.5}
-                            />}
+                            icon={<IconCalendar size="1.1rem" stroke={1.5}/>}
+                            value={new Date(data.dropoff.date)}
+                            onChange={val => {
+                                console.log(val);
+                                handleData(val, "dropoff_date");
+                            }}
                         />
                         <input
                             className="timeSelector"
                             type={"time"}
+                            value={data.dropoff.time}
+                            onChange={e => {
+                              handleData(e.target.value, "dropoff_time");
+                            }}
                         />
                     </div>
                 </DateTime>
@@ -193,7 +147,7 @@ function Search(props){
                     {
                         vehicles.map((e, idx)=>{
                             return (
-                                <Card name={e.name} image={e.url} pickupDate={"21 Apr 2023"} pickupTime={"10:30 am"} dropoffDate={"21 Apr 2023"} dropoffTime={"10:30 am"} total={"9100"} />
+                                <Card name={e.name} image={e.image} pickupDate={data.pickup.date} pickupTime={data.pickup.time} dropoffDate={data.dropoff.date} dropoffTime={data.dropoff.time} rate={e.hourly.monThur.within} />
                             );
                         })
                     }
@@ -208,7 +162,7 @@ const Container = styled.div`
 `;
 
 const Left = styled.div`
-    width: 300px;
+    width: 350px;
     padding: 10px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 

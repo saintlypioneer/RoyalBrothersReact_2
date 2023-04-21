@@ -1,6 +1,17 @@
 import styled from "styled-components";
 
-function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, total}) {
+function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, rate}) {
+
+    const options = { timeZone: "Asia/Kolkata", dateStyle: "long" };
+    const formattedPickupDate = new Date(pickupDate).toLocaleDateString("en-IN", options);
+    const formattedDropoffDate = new Date(dropoffDate).toLocaleDateString("en-IN", options);
+    const date1 = new Date(`${formattedPickupDate} ${pickupTime}`);
+    const date2 = new Date(`${formattedDropoffDate} ${dropoffTime}`);
+    const hourDifference = Math.abs(date2 - date1) / 36e5;
+    console.log(hourDifference);
+    const total = (rate*hourDifference).toFixed(2);
+
+
     return (
         <Container>
             <p>{name}</p>
@@ -8,12 +19,12 @@ function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, to
             <TimeStamp>
                 <div>
                     <span>{pickupTime}</span>
-                    <span>{pickupDate}</span>
+                    <span>{formattedPickupDate}</span>
                 </div>
                 <To>to</To>
                 <div>
                     <span>{dropoffTime}</span>
-                    <span>{dropoffDate}</span>
+                    <span>{formattedDropoffDate}</span>
                 </div>
             </TimeStamp>
             <Book>

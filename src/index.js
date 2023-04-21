@@ -18,7 +18,7 @@ root.render(
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
           <ChakraProvider>
-            <App />
+              <App />
           </ChakraProvider>
         </BrowserRouter>
       </PersistGate>
