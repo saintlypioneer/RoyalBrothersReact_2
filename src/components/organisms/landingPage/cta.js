@@ -133,6 +133,11 @@ const DateTime = styled.div`
     display: flex;
     gap: 10px;
     justify-content: space-between;
+    align-items: center;
+
+    input{
+      padding: 4px;
+    }
   }
 `;
 

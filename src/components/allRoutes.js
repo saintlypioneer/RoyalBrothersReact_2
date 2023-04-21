@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./templates/home";
 import Auth from "./templates/auth";
+import Search from "./templates/search";
 
 function AllRoutes(){
 
@@ -19,7 +20,7 @@ function AllRoutes(){
         },
         {
             path: "/search",
-            element: "**search"
+            element: <Search />
         },
         {
             path: "/blog",
