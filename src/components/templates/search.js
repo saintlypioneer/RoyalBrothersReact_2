@@ -2,6 +2,7 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { DatePickerInput } from "@mantine/dates";
 import { IconCalendar } from "@tabler/icons-react";
+import Card from "../organisms/searchPage/Card";
 
 function Search(props){
 
@@ -188,7 +189,15 @@ function Search(props){
                     <Tab>Price - Low to high</Tab>
                     <Tab>Price - High to Low</Tab>
                 </Sort>
-                <Results></Results>
+                <Results>
+                    {
+                        vehicles.map((e, idx)=>{
+                            return (
+                                <Card name={e.name} image={e.url} pickupDate={"21 Apr 2023"} pickupTime={"10:30 am"} dropoffDate={"21 Apr 2023"} dropoffTime={"10:30 am"} total={"9100"} />
+                            );
+                        })
+                    }
+                </Results>
             </Right>
         </Container>
     );
@@ -202,6 +211,10 @@ const Left = styled.div`
     width: 300px;
     padding: 10px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    @media screen and (max-width: 1000px) {
+        display: none;
+    }
 
     h1{
         font-size: 1.5rem;
@@ -240,6 +253,9 @@ const DateTime = styled.div`
 const SearchBox = styled.div`
     width: 100%;
     background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px;
 
     &>p{
         font-size: 1rem;
@@ -273,6 +289,10 @@ const Sort = styled.div`
     border-bottom: 1px solid #fed250;
     padding: 0 10px;
 
+    @media screen and (max-width: 400px) {
+        display: none;
+    }
+
     &>span{
         font-weight: 600;
         padding: 10px 0;
@@ -290,6 +310,22 @@ const Tab = styled.div`
     }
 `;
 
-const Results = styled.div``;
+const Results = styled.div`
+    width: 100%;
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    gap: 10px;
+
+    @media screen and (max-width: 820px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+`;
 
 export default Search;
