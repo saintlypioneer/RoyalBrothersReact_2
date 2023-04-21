@@ -12,12 +12,12 @@ const bookingSlice = createSlice({
     name: "booking",
     initialState: {
         pickup: {
-            date: "",
-            time: ""
+            date: (new Date()).toISOString(),
+            time: "00:00"
         },
         dropoff: {
-            date: "",
-            time: ""
+            date: (new Date()).toISOString(),
+            time: "00:00"
         },
         city: "",
         vehicles: [],
