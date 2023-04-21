@@ -9,6 +9,11 @@ export const createUser = createAsyncThunk("createUser", async(data)=>{
 });
 
 // validateUser
+export const validateUser = createAsyncThunk("validateUser", async(data)=>{
+    const response = await axios.post(`${BASE_URL}/auth/login`, {...data});
+    console.log(response.data);
+    return response.data;
+});
 
 const userSlice = createSlice({
     name: "user",
@@ -22,6 +27,7 @@ const userSlice = createSlice({
         isError: false
     },
     extraReducers: (builder)=>{
+        // SIGNING-IN
         builder.addCase(createUser.pending, (state, action)=>{
             state.email= "";
             state.name= "";
@@ -32,15 +38,48 @@ const userSlice = createSlice({
             state.isError= false;
         });
         builder.addCase(createUser.fulfilled, (state, action)=>{
-            state.email= action.email;
-            state.name= action.name;
-            state.mobile= action.mobile;
-            state.credits= action.token;
-            state.token= action.token;
+            console.log(action);
+            state.email= action.payload.data.email;
+            state.name= action.payload.data.name;
+            state.mobile= action.payload.data.mobile;
+            state.credits= action.payload.data.credits;
+            state.token= action.payload.token;
             state.isLoading= false;
             state.isError= false;
         });
         builder.addCase(createUser.rejected, (state, action)=>{
+            console.log(action);
+            state.email= "";
+            state.name= "";
+            state.mobile= "";
+            state.credits= 0;
+            state.token= "";
+            state.isLoading= false;
+            state.isError= true;
+        });
+
+        // LOGGIN-IN
+        builder.addCase(validateUser.pending, (state, action)=>{
+            state.email= "";
+            state.name= "";
+            state.mobile= "";
+            state.credits= 0;
+            state.token= "";
+            state.isLoading= true;
+            state.isError= false;
+        });
+        builder.addCase(validateUser.fulfilled, (state, action)=>{
+            console.log(action);
+            state.email= action.payload.data.email;
+            state.name= action.payload.data.name;
+            state.mobile= action.payload.data.mobile;
+            state.credits= action.payload.data.credits;
+            state.token= action.payload.token;
+            state.isLoading= false;
+            state.isError= false;
+        });
+        builder.addCase(validateUser.rejected, (state, action)=>{
+            console.log(action);
             state.email= "";
             state.name= "";
             state.mobile= "";
