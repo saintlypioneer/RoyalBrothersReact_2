@@ -3,8 +3,31 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-export const fetchVehicles = createAsyncThunk("fetchVehicles", async()=>{
+export const fetchVehicles = createAsyncThunk("fetchVehicles", async () => {
     const response = await axios.get(`${BASE_URL}/vehicle`);
+    return response.data;
+});
+
+export const addTrip = createAsyncThunk("addTrip", async (payload) => {
+    await axios.post(`${BASE_URL}/trip/book`, { ...payload.data }, {
+        headers: {
+            Authorization: `bearer ${payload.token}`
+        }
+    });
+    const response = await axios.get(`${BASE_URL}/trip`, {
+        headers: {
+            Authorization: `bearer ${payload.token}`
+        }
+    });
+    return response.data;
+});
+
+export const fetchTrips = createAsyncThunk("fetchTrips", async(token)=>{
+    const response = await axios.get(`${BASE_URL}/trip`, {
+        headers: {
+            Authorization: `bearer ${token}`
+        }
+    });
     return response.data;
 })
 
@@ -25,33 +48,42 @@ const bookingSlice = createSlice({
         helmetsCount: 0,
         booking: {
             vehicleInfo: {}
-        }
+        },
+        rides: []
     },
     reducers: {
-        setTimeSpan: (state, action)=>{
+        setTimeSpan: (state, action) => {
             state.pickup.date = action.payload.pickup.date;
             state.pickup.time = action.payload.pickup.time;
             state.dropoff.date = action.payload.dropoff.date;
             state.dropoff.time = action.payload.dropoff.time;
         },
-        setCity: (state, action) =>{
-            state.city = action.payload.city;
+        setCity: (state, action) => {
+            state.city = action.payload;
         },
-        selectVehicle: (state, action)=>{
-            state.booking.vehicleInfo= {...action.payload};
+        selectVehicle: (state, action) => {
+            state.booking.vehicleInfo = { ...action.payload };
         },
-        setAmount: (state, action)=>{
+        setAmount: (state, action) => {
             state.amount = action.payload;
         }
     },
-    extraReducers: (builder)=>{
-        builder.addCase(fetchVehicles.fulfilled, (state, action)=>{
+    extraReducers: (builder) => {
+        builder.addCase(fetchVehicles.fulfilled, (state, action) => {
             // console.log(action.payload.data);
             state.vehicles = [...action.payload.data];
-        })
+        });
+
+        builder.addCase(addTrip.fulfilled, (state, action) => {
+            state.rides = [...action.payload.data];
+        });
+
+        builder.addCase(fetchTrips.fulfilled, (state, action) => {
+            state.rides = [...action.payload.data];
+        });
     }
 });
 
-export const {setTimeSpan, setCity, selectVehicle, setAmount} = bookingSlice.actions;
+export const { setTimeSpan, setCity, selectVehicle, setAmount } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

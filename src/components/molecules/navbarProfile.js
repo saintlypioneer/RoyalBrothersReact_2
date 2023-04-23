@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { logout } from "../../redux/userSlice";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
     Menu,
     MenuButton,
@@ -25,8 +25,7 @@ import {
 function Profile(props) {
 
     const { name } = useSelector(state => state.user);
-    console.log(name);
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
         <Menu>
@@ -40,7 +39,9 @@ function Profile(props) {
                 <MenuItem>
                     {name}
                 </MenuItem>
-                <MenuItem icon={<ExternalLinkIcon />}>
+                <MenuItem onClick={()=>{
+                    navigate("/myrides");
+                }} icon={<ExternalLinkIcon />}>
                     My Rides
                 </MenuItem>
                 <MenuItem icon={
@@ -51,7 +52,7 @@ function Profile(props) {
                     My Profile
                 </MenuItem>
                 <MenuItem onClick={()=>{
-                    dispatch(logout());
+                    navigate("/logout");
                 }} icon={<LockIcon />}>
                     Logout
                 </MenuItem>

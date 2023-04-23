@@ -4,6 +4,9 @@ import Auth from "./templates/auth";
 import Search from "./templates/search";
 import Checkout from "./templates/checkout";
 import Payment from "./templates/payment";
+import Logout from "./organisms/logout";
+import PrivateRoute from "./privateRoute";
+import MyRides from "./templates/myRides";
 
 function AllRoutes(){
 
@@ -42,11 +45,11 @@ function AllRoutes(){
         },
         {
             path: "/payment",
-            element: <Payment />
+            element: <PrivateRoute><Payment /></PrivateRoute>
         },
         {
             path: "/myrides",
-            element: "**myrides"
+            element: <PrivateRoute><MyRides /></PrivateRoute>
         },
         {
             path: "/profile",
@@ -54,7 +57,7 @@ function AllRoutes(){
         },
         {
             path: "/logout",
-            element: "**logout"
+            element: <Logout />
         }
     ];
 

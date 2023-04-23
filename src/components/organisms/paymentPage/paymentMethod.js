@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import { Radio, RadioGroup, Stack, useToast } from '@chakra-ui/react'
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from "react-redux";
+import { addTrip } from "../../../redux/bookingSlice";
 
 import PaymentCardForm from "./paymentCardForm";
 
@@ -17,7 +19,7 @@ function PaymentMethod(props) {
         cvv: ""
     });
 
-    function handleData(e){
+    function handleData(e) {
         setCardDetails({
             ...cardDetails,
             [e.target.name]: e.target.value
@@ -26,8 +28,12 @@ function PaymentMethod(props) {
 
     const navigate = useNavigate();
 
-    function handlePayment(){
-        if (cardDetails.number.length<12 || cardDetails.name.length<5 || cardDetails.expiryMonth.length<2 || cardDetails.expiryYear<2 || cardDetails.cvv<3){
+    const { booking } = useSelector(state => state);
+    const {token} = useSelector(state=>state.user);
+    const dispatch = useDispatch();
+
+    function handlePayment() {
+        if (cardDetails.number.length < 12 || cardDetails.name.length < 5 || cardDetails.expiryMonth.length < 2 || cardDetails.expiryYear < 2 || cardDetails.cvv < 3) {
             toast({
                 title: 'Please enter valid details',
                 // description: "Do you already have an account?",
@@ -45,9 +51,24 @@ function PaymentMethod(props) {
                 isClosable: true,
                 position: "bottom-right"
             });
-            setTimeout(() => {
-                navigate("/")
 
+            const payload = {
+                token: token, data: {
+                    type: "",
+                    dateFrom: booking.pickup.date,
+                    dateTo: booking.dropoff.date,
+                    timeFrom: booking.pickup.time,
+                    timeTo: booking.dropoff.time,
+                    amount: booking.amount,
+                    location: "",
+                    helmetsCount: booking.helmetsCount
+                }
+            };
+            dispatch(addTrip(payload));
+
+            setTimeout(() => {
+                // console.log(booking);
+                navigate("/");
             }, 3000); // Redirect after 3 seconds
         }
     }
@@ -73,7 +94,7 @@ function PaymentMethod(props) {
                     <RadioGroup onChange={setValue} value={value} mt="10px" mb="10px">
                         <Stack direction='row'>
                             <Radio value='1'>
-                                <img style={{padding: "15px"}} src="https://www.pngmart.com/files/22/Visa-Card-Logo-PNG-Picture.png" alt="" />
+                                <img style={{ padding: "15px" }} src="https://www.pngmart.com/files/22/Visa-Card-Logo-PNG-Picture.png" alt="" />
                             </Radio>
                             <Radio value='2'>
                                 <img src="https://pngimg.com/uploads/mastercard/mastercard_PNG9.png" alt="" />

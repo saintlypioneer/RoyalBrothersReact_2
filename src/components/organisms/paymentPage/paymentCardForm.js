@@ -18,7 +18,7 @@ function PaymentCardForm({handleData}) {
                     <div>
                         <label>CVV</label>
                         <br/>
-                        <input name="cvv" onChange={e=>handleData(e)} id="cvv" type="number" placeholder="CVV" />
+                        <input name="cvv" onChange={e=>handleData(e)} id="cvv" type="password" placeholder="CVV" />
                     </div>
                 </Expiry>
             </form>

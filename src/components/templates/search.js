@@ -11,6 +11,7 @@ function Search(props){
 
     const dispatch = useDispatch();
     const { pickup, dropoff, vehicles } = useSelector(state => state.booking);
+    const [bikeModel, setBikeModel] = useState("");
 
     const [data, setData] = useState({
         pickup: {
@@ -60,6 +61,36 @@ function Search(props){
         }
 
         dispatch(setTimeSpan(data));
+    }
+
+    const [filteredVehicles, setFilteredVehicles] = useState([...vehicles]);
+
+    function filterVehicles(){
+        const temp = vehicles.filter((elem, idx)=>elem.name==bikeModel);
+        // setFilteredVehicles(()=>([]));
+        setFilteredVehicles(temp);
+    }
+
+
+    const [sortBy, setSortBy] = useState("relevance");
+    function sortVehicles(type){
+        const options = { timeZone: "Asia/Kolkata", dateStyle: "long" };
+        const formattedPickupDate = new Date(pickup.date).toLocaleDateString("en-IN", options);
+        const formattedDropoffDate = new Date(dropoff.date).toLocaleDateString("en-IN", options);
+        const date1 = new Date(`${formattedPickupDate} ${pickup.time}`);
+        const date2 = new Date(`${formattedDropoffDate} ${dropoff.time}`);
+        const hourDifference = Math.abs(date2 - date1) / 36e5;
+        let temp = JSON.parse(JSON.stringify(vehicles));
+        temp.sort((a, b)=>{
+            const totalA = (a.hourly.monThur.within*hourDifference).toFixed(2);
+            const totalB = (b.hourly.monThur.within*hourDifference).toFixed(2);
+            if (type=="relevance")
+                return 0; // for same order as that from DB
+            else if (type=="lth")
+                return (totalA-totalB);
+            return (totalB-totalA);
+        });
+        setFilteredVehicles(()=>[...temp]);
     }
 
     return(
@@ -127,7 +158,10 @@ function Search(props){
                             vehicles.map((e, idx)=>{
                                 return(
                                     <Radio>
-                                        <input type="radio" id={e.name} name="bike_modal" value={e.name} />
+                                        <input onChange={e=>{
+                                            setBikeModel(e.target.value);
+                                            filterVehicles();
+                                        }} type="radio" id={e.name} name="bike_modal" value={e.name} />
                                         <label for={e.name}>{e.name}</label>
                                     </Radio>
                                 );
@@ -139,13 +173,13 @@ function Search(props){
             <Right>
                 <Sort>
                     <span>Sort by</span>
-                    <Tab className="active">Relevance</Tab>
-                    <Tab>Price - Low to high</Tab>
-                    <Tab>Price - High to Low</Tab>
+                    <Tab onClick={()=>{setSortBy("relevance"); sortVehicles("relevance");}} className={sortBy=="relevance"&&"active"}>Relevance</Tab>
+                    <Tab onClick={()=>{setSortBy("lth"); sortVehicles("lth");}} className={sortBy=="lth"&&"active"}>Price - Low to high</Tab>
+                    <Tab onClick={()=>{setSortBy("htl"); sortVehicles("htl");}} className={sortBy=="htl"&&"active"}>Price - High to Low</Tab>
                 </Sort>
                 <Results>
                     {
-                        vehicles.map((e, idx)=>{
+                        filteredVehicles.map((e, idx)=>{
                             return (
                                 <Card name={e.name} image={e.image} pickupDate={data.pickup.date} pickupTime={data.pickup.time} dropoffDate={data.dropoff.date} dropoffTime={data.dropoff.time} rate={e.hourly.monThur.within} vehInfo={e} />
                             );

@@ -11,7 +11,6 @@ function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, ra
     const date1 = new Date(`${formattedPickupDate} ${pickupTime}`);
     const date2 = new Date(`${formattedDropoffDate} ${dropoffTime}`);
     const hourDifference = Math.abs(date2 - date1) / 36e5;
-    console.log(hourDifference);
     const total = (rate*hourDifference).toFixed(2);
 
 

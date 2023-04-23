@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCity } from '../../../redux/bookingSlice';
 
 import {
     Modal,
@@ -12,6 +14,8 @@ import styled from 'styled-components';
 
 
   function CityModal({ isOpen, onOpen, onClose }) {
+
+    const dispatch = useDispatch();
 
     const cityData = [
         {
@@ -83,7 +87,10 @@ import styled from 'styled-components';
                 {
                     cityData.map((city, idx)=>{
                         return(
-                            <Card>
+                            <Card onClick={()=>{
+                                dispatch(setCity(city.name));
+                                onClose(false);
+                            }}>
                                 <img src={city.url} alt='' />
                                 <h2>{city.name}</h2>
                             </Card>

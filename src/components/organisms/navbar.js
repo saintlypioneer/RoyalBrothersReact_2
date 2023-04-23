@@ -11,7 +11,8 @@ function Navbar(props) {
     // for sideDrawer
     const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
     // for city modal
-    const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+    const {city} = useSelector(state=>state.booking);
+    const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure({defaultIsOpen: (city=="")?true:false});
 
     const {name} = useSelector(state=>state.user);
 
@@ -44,7 +45,7 @@ function Navbar(props) {
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
 
-                    <span>Agra</span>
+                    <span>{city || "Agra"}</span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                         <path fill="currentColor" d="M6.3 9.7l5 5c.2.2.5.3.7.3s.5-.1.7-.3l5-5c.4-.4.4-1 0-1.4s-1-.4-1.4 0L12 13.6 7.7 9.3c-.4-.4-1-.4-1.4 0s-.4 1 0 1.4z" />

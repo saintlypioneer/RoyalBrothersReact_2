@@ -21,6 +21,7 @@ function Checkout(props){
     const dispatch = useDispatch();
 
     function handleCheckout(){
+        // clicked on make payment button
         console.log("Checking out");
         dispatch(setAmount(amountIncludingGST));
         navigate("/payment");

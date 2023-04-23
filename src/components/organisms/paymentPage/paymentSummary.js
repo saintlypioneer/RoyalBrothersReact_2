@@ -2,22 +2,33 @@ import styled from "styled-components";
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function PaymentSummary(props) {
 
-    const [seconds, setSeconds] = useState(180); // 3 minutes in seconds
-    const [percent, setPercent] = useState(100);
+    const totalSeconds = 180;
+    const [seconds, setSeconds] = useState(totalSeconds); // 3 minutes in seconds
+    const [percent, setPercent] = useState(0);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setSeconds(seconds => seconds - 1);
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        const interval = setInterval(()=>{
+            if (seconds<=0){
+                clearInterval(interval);
+                console.log("OUT");
+                window.alert("Time out!!");
+                navigate ("/");
+                return;
+            }
+            setSeconds((seconds)=>seconds-1);
         }, 1000);
 
-        return () => clearInterval(interval);
-    }, []);
+        return ()=>clearInterval(interval);
+    }, [seconds, percent]);
 
     useEffect(() => {
-        setPercent(seconds / 180 * 100); // calculate the percentage
+        setPercent(seconds / totalSeconds * 100); // calculate the percentage
     }, [seconds]);
 
     const {amount} = useSelector(state=>state.booking);
