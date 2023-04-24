@@ -29,6 +29,7 @@ function PaymentMethod(props) {
     const navigate = useNavigate();
 
     const { booking } = useSelector(state => state);
+    
     const {token} = useSelector(state=>state.user);
     const dispatch = useDispatch();
 
@@ -54,16 +55,21 @@ function PaymentMethod(props) {
 
             const payload = {
                 token: token, data: {
-                    type: "",
+                    type: booking.booking.vehicleInfo._id,
+                    vehicle: booking.booking.vehicleInfo._id,
                     dateFrom: booking.pickup.date,
                     dateTo: booking.dropoff.date,
                     timeFrom: booking.pickup.time,
                     timeTo: booking.dropoff.time,
                     amount: booking.amount,
                     location: "",
-                    helmetsCount: booking.helmetsCount
+                    helmetsCount: booking.helmetsCount,
+                    vehicleName: booking.booking.vehicleInfo.name,
+                    vehicleImage: booking.booking.vehicleInfo.image,
+                    rate: booking.booking.vehicleInfo.hourly.monThur.within
                 }
             };
+            
             dispatch(addTrip(payload));
 
             setTimeout(() => {

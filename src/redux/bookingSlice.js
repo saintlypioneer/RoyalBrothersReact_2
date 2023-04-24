@@ -9,17 +9,22 @@ export const fetchVehicles = createAsyncThunk("fetchVehicles", async () => {
 });
 
 export const addTrip = createAsyncThunk("addTrip", async (payload) => {
-    await axios.post(`${BASE_URL}/trip/book`, { ...payload.data }, {
-        headers: {
-            Authorization: `bearer ${payload.token}`
-        }
-    });
-    const response = await axios.get(`${BASE_URL}/trip`, {
-        headers: {
-            Authorization: `bearer ${payload.token}`
-        }
-    });
-    return response.data;
+    try{
+        await axios.post(`${BASE_URL}/trip/book`, { ...payload.data }, {
+            headers: {
+                Authorization: `bearer ${payload.token}`
+            }
+        });
+        const response = await axios.get(`${BASE_URL}/trip`, {
+            headers: {
+                Authorization: `bearer ${payload.token}`
+            }
+        });
+        return response.data;
+    } catch(err){
+        console.log("ERROR");
+        window.location.href = "/logout";
+    }
 });
 
 export const fetchTrips = createAsyncThunk("fetchTrips", async(token)=>{

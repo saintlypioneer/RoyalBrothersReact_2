@@ -1,27 +1,10 @@
 import styled from "styled-components";
-import { selectVehicle } from "../../../redux/bookingSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
-function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, rate, vehInfo}) {
+function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, rate, amount}) {
 
     const options = { timeZone: "Asia/Kolkata", dateStyle: "long" };
     const formattedPickupDate = new Date(pickupDate).toLocaleDateString("en-IN", options);
     const formattedDropoffDate = new Date(dropoffDate).toLocaleDateString("en-IN", options);
-    const date1 = new Date(`${formattedPickupDate} ${pickupTime}`);
-    const date2 = new Date(`${formattedDropoffDate} ${dropoffTime}`);
-    const hourDifference = Math.abs(date2 - date1) / 36e5;
-    const total = (rate*hourDifference).toFixed(2);
-
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    function handleBooking(){
-        dispatch(selectVehicle(vehInfo));
-        console.log(vehInfo);
-        navigate("/checkout");
-    }
 
 
     return (
@@ -40,8 +23,9 @@ function Card({name, image, pickupDate, pickupTime, dropoffDate, dropoffTime, ra
                 </div>
             </TimeStamp>
             <Book>
-                <span>₹ {total}</span>
-                <button onClick={handleBooking}>Book</button>
+                <span>total: ₹ {amount}</span>
+                <span className="rate">rate: ₹ {rate}/km</span>
+                {/* <button onClick={handleBooking}>Book</button> */}
             </Book>
         </Container>
     );
@@ -112,10 +96,17 @@ const Book = styled.div`
     border-top: 2px solid rgba(0, 0, 0, 0.1);
     padding-top: 10px;
 
+    &>.rate{
+        font-weight: 500;
+        color: grey;
+        font-size: 0.8rem;
+    }
+
     &>span{
         flex: 1;
         text-align: center;
         font-weight: 600;
+        gap: 10px;
     }
 
     &>button{
